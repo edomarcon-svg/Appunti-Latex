@@ -1,0 +1,941 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- PACCHETTI FONDAMENTALI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{amsmath}  % Per ambienti matematici avanzati
+\usepackage{amssymb}  % Per simboli matematici (es. \hbar)
+\usepackage{physics}  % Fondamentale per derivate, bra-ket, ecc.
+\usepackage{geometry} % Per gestire i margini
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+
+% --- IMMAGINI E GRAFICA ---
+\usepackage{graphicx}
+\usepackage{float}    % Per posizionare le immagini esattamente dove vogliamo (opzione [H])
+
+% --- FORMATTAZIONE EXTRA ---
+\usepackage{mdframed} % Per i riquadri attorno alle formule importanti (es. H = K + V)
+\usepackage{booktabs} % Per tabelle eleganti (come quella a pagina 1)
+\usepackage{cancel}   % Per le semplificazioni nelle formule
+
+\begin{document}
+
+\section*{INTRODUZIONE:}
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{ll}
+        \textbf{PARTICELLE $\rightarrow \lceil$URTI$\rfloor$} & \textbf{ONDE (LAMPI)} \\
+        \midrule
+        Legge di Newton & Leggi di Maxwell \\
+        $\cdot$ massa $m$ & $\cdot$ Funz. d'onda $\psi = f(\vec{r}, t)$ \\
+        $\cdot$ posiz. $\vec{r}$ & $\cdot$ frequenza $\nu \qquad \lambda\nu = |\vec{v}|$ \\
+        $\cdot$ traiettoria $\vec{r} = \vec{r}(t)$ & $\cdot$ vettore d'onda $\vec{k} = \frac{2\pi}{\lambda}\hat{u}_{prop.}$ \\
+        $\cdot$ Velocità $\vec{v} = \frac{d\vec{r}}{dt}$ & $\cdot$ interfer. \\
+        $\cdot$ quant. di moto $\vec{p} = m\vec{v}$ & $\cdot$ diffraz. \\
+        \quad (momento lineare) & $\cdot$ $I \propto |A|^2$ (DELOCALIZZATE) \\
+        $\cdot$ $K = \frac{1}{2}mv^2$ (localizzata) & \\
+    \end{tabular}
+\end{table}
+
+\vspace{0.5cm}
+\noindent $\uparrow$ Energia tot. particella \hfill \text{EN. DI RIPOSO} \\
+$E^2 = p^2c^2 + m^2c^4$ \hfill $\uparrow$ \text{(COSTANTE)}
+\begin{align*}
+    E &= \sqrt{p^2c^2 + m^2c^4} = \sqrt{m^2c^4 \left( \frac{p^2}{m^2c^2} + 1 \right)} = \left\{ \underbrace{p \ll mc}_{\downarrow \text{ } v \ll c} \right\} \simeq m c^2 \left( 1 + \frac{p^2}{2m^2c^2} \right) = \overbrace{mc^2} + \underbrace{\frac{p^2}{2m}}_{\searrow E_c} \\
+    & \searrow \text{regime non relativistico}
+\end{align*}
+
+$\Rightarrow$ REGIME NON RELATIVISTICO $\Rightarrow E = \frac{p^2}{2m} = \frac{1}{2}mv^2$
+
+\vspace{0.5cm}
+\begin{itemize}
+    \item QUANTIZZAZIONE della materia: Leucippo, Democrito (V sec. a.C.) \\
+    $\simeq 1700 \Rightarrow \text{Atomi} \Rightarrow \text{Tavola periodica} \Rightarrow \text{MOLE} \rightarrow \lceil N_A = 6,02 \cdot 10^{23} \rfloor$
+    
+    \item \hphantom{QUANTIZZAZIONE} della carica: $\lceil q_e = -1,6 \cdot 10^{-19} C \rfloor$
+    
+    \item \hphantom{QUANTIZZAZIONE} dell' ENERGIA: Plank
+\end{itemize}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Disegnino sistema massa-molla (k, m)]
+% ==========================================
+
+\begin{align*}
+    & \quad \uparrow 1, 2, 3\dots \\
+    E &= n (h \nu) \rightarrow \text{Frequenza} \\
+    & \quad \downarrow \\
+    & \text{Costante di Plank} \quad \nearrow \color{red}{\text{MOMENTO ANGOLARE}} \\
+    & h = 6,626 \cdot 10^{-34} \, Js \\
+    \\
+    E &= n (\hbar \omega) \\
+    & \quad \searrow \\
+    & \quad \hbar = \frac{h}{2\pi} \quad \text{costante di plank ridotta}
+\end{align*}
+
+\newpage
+% ---------------------------------------------------------
+\section*{FORMALISMO LAGRANGIANO:}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Sistema di assi x-y con massa m e vettori forza F1, F2, P]
+% ==========================================
+
+\begin{equation*}
+    F_x^{tot} = m a_x \Rightarrow m \frac{d^2 x(t)}{dt^2} = F_x^{tot} \qquad \begin{cases} x(0) \\ \frac{dx}{dt}(0) \end{cases} \Rightarrow x = x(t) \quad \nwarrow \text{Legge del moto}
+\end{equation*}
+
+\vspace{0.5cm}
+\noindent GdL: $n$ di param. indipendenti per descrivere interam. il sistema. \\
+$n \text{ GdL} \Rightarrow n \text{ Coord. Generalizzate } q_1, q_2, q_3 \dots q_n \Rightarrow \dot{q}_i = \frac{dq_i}{dt} \text{ vel. generaliz.}$ \\
+Scopo: $q = q(t)$
+
+\vspace{0.5cm}
+\noindent \textbf{LAGRANGIANA:}
+\begin{equation*}
+    \mathcal{L} = \mathcal{L}(q_1, \dots q_n ; \dot{q}_1, \dots \dot{q}_n, t) = \underbrace{K(q_1 \dots q_n, \dot{q}_1 \dots \dot{q}_n)}_{\text{Energ. Cinet.}} - \underbrace{V(q_1 \dots q_n, t)}_{\text{Energ. pot.}}
+\end{equation*}
+\begin{equation*}
+    = K(q, \dot{q}) - V(q, t) \longrightarrow \text{Sistemi conservativi}
+\end{equation*}
+
+\vspace{0.3cm}
+$\rightarrow$ Sistema di N punti mat. $\quad K = \sum_{i=1}^N \frac{1}{2} m_i \underbrace{|\vec{v}_i|^2}_{\searrow \dot{q}_{ix}, \dot{q}_{iy}, \dot{q}_{iz}} \quad V = V(\vec{r}_1 \dots \vec{r}_N, t)$
+
+\vspace{0.3cm}
+\noindent $\nwarrow$ Azione \\
+$S = \int_{t_1}^{t_2} \mathcal{L}(q(t), \dot{q}(t), t) dt \qquad [S] = E \cdot t \Rightarrow \substack{\text{Momento} \\ \text{angolare}}$
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Grafico q_i in funzione di t, con traiettorie (1), (2), (3)]
+% ==========================================
+
+\noindent FAMIGLIA di possibili $q(t)$ \\
+$S = \int_{t_1}^{t_2} \mathcal{L}(q, \dot{q}, t) dt \rightarrow \underline{\underline{\text{FUNZIONALE}}} \quad \text{(la } q \text{ non è univocamente definita)}$
+
+\vspace{0.5cm}
+\noindent $\rightarrow$ PRINCIPIO di HAMILTON (Azione stazionaria):
+\begin{equation*}
+    \boxed{ \delta S = \delta \int_{t_1}^{t_2} \mathcal{L}(q, \dot{q}, t) dt = 0 } \qquad q \text{ tale per cui } S \text{ è stazionaria}
+\end{equation*}
+$\hookrightarrow$ differenziale di un funzionale
+
+\vspace{0.3cm}
+\noindent Es.: \\
+$\mathcal{L} = K(q, \dot{q}) - V(q)$
+\begin{equation*}
+    \delta S = \delta \int_{t_1}^{t_2} \mathcal{L}(q, \dot{q}) dt = 0 \Rightarrow \delta S = \int_{t_1}^{t_2} \left( \frac{\partial \mathcal{L}}{\partial q} \delta q + \underbrace{\frac{\partial \mathcal{L}}{\partial \dot{q}} \delta \dot{q}}_{\searrow \substack{\text{diff. tra due } q(t) \\ \text{infinitamente vicine}}} \right) dt =
+\end{equation*}
+\begin{equation*}
+    = \int_{t_1}^{t_2} \left( \frac{\partial \mathcal{L}}{\partial q} \delta q + \frac{\partial \mathcal{L}}{\partial \dot{q}} \underbrace{\frac{d}{dt} (\delta q)}_{\downarrow} \right) dt = 0
+\end{equation*}
+
+% Integrazione per parti
+\begin{equation*}
+    \int_{t_1}^{t_2} \left[ \underbrace{\frac{\partial \mathcal{L}}{\partial \dot{q}}}_{f(t)} \underbrace{\frac{d}{dt} (\delta q)}_{g'(t)} \right] dt = \underbrace{\cancel{\left. \frac{\partial \mathcal{L}}{\partial \dot{q}} \delta q \right|_{t_1}^{t_2}}}_{\searrow \quad \delta q(t_1) = \delta q(t_2) = 0} - \int_{t_1}^{t_2} \underbrace{\frac{d}{dt} \left( \frac{\partial \mathcal{L}}{\partial \dot{q}} \right)}_{f'(t)} \underbrace{\delta q}_{g(t)} \, dt
+\end{equation*}
+
+\begin{equation*}
+    \Rightarrow \int_{t_1}^{t_2} \left( \frac{\partial \mathcal{L}}{\partial q} \delta q - \frac{d}{dt} \left( \frac{\partial \mathcal{L}}{\partial \dot{q}} \right) \delta q \right) dt = 0
+\end{equation*}
+
+\begin{equation*}
+    \delta S = \int_{t_1}^{t_2} \underbrace{\left[ \frac{\partial \mathcal{L}}{\partial q} - \frac{d}{dt} \left( \frac{\partial \mathcal{L}}{\partial \dot{q}} \right) \right]}_{= 0} \overbrace{\delta q}^{\nearrow \text{arbitraria}} dt = 0 \quad \Rightarrow \quad \boxed{ \frac{\partial \mathcal{L}}{\partial q} - \frac{d}{dt} \left( \frac{\partial \mathcal{L}}{\partial \dot{q}} \right) = 0 }
+\end{equation*}
+
+\vspace{0.5cm}
+\begin{align*}
+    & \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad \frac{d}{dt} \left( \frac{\partial \mathcal{L}}{\partial \dot{q}_i} \right) = \frac{\partial \mathcal{L}}{\partial q_i} \qquad \text{Eq. di Lagrange} \\
+    & \text{Momento canonico coniugato alla} \qquad\qquad \text{ANALOGO della legge di NEWTON} \\
+    & \text{coord. } q_k \\
+    & \cdot p_k = \frac{\partial \mathcal{L}}{\partial \dot{q}_k} \Rightarrow \frac{d}{dt} \left( \frac{\partial \mathcal{L}}{\partial \dot{q}_k} \right) = \frac{\partial \mathcal{L}}{\partial q_k} \qquad\qquad \mathcal{L} \neq \mathcal{L}(q_k) \Rightarrow \frac{\partial \mathcal{L}}{\partial q_k} = 0 \\
+    & \qquad\qquad\qquad\qquad \Downarrow \\
+    & \qquad\qquad \frac{d}{dt} \left( \frac{\partial \mathcal{L}}{\partial \dot{q}_k} \right) = 0 = \frac{d}{dt} (p_k) = 0 \Rightarrow \lceil p_k = \text{cost} \rfloor \\
+    & \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad \Rightarrow \lceil q_k \text{ è CICLICA} \rfloor
+\end{align*}
+
+\begin{enumerate}
+    \item EQ. SCALARI (non ha vettori)
+    \item $q_k$ (ciclica) $\Rightarrow p_k = \text{cost}$
+    \item $x = x(t) \qquad m \frac{d^2 x(t)}{dt^2} = F_x^{TOT}$
+\end{enumerate}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Grafico dell'azione Hamiltoniana con q(t1) e q(t2) tra t1 e t2]
+% ==========================================
+
+\vspace{0.3cm}
+\noindent \textbf{HAMILTON} è integrale $\Rightarrow$ considera già tutta la traiettoria, non punto per punto. Considero tutti i percorsi e scelgo quello che rende minima l'azione.
+
+\vspace{0.5cm}
+\noindent \textbf{Es.: 1) Partic. nel campo 3D}
+\begin{equation*}
+    q_i = (x, y, z) \qquad V = mgz \qquad \mathcal{L} = \frac{1}{2}m(\dot{x}^2 + \dot{y}^2 + \dot{z}^2) - mgz \qquad 
+    \begin{matrix}
+        (3 \text{ GdL}) \\ \hookrightarrow 3 \text{ eq. di Lag.}
+    \end{matrix}
+\end{equation*}
+
+\vspace{0.3cm}
+\begin{align*}
+    i &= x \qquad \frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{x}}\right) = \frac{\partial \mathcal{L}}{\partial x} \Rightarrow \frac{d}{dt}(\underbrace{m\dot{x}}_{\searrow p_x = \text{cost}}) = 0 \qquad \text{uguale per } i=y \\
+    i &= z \qquad \frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{z}}\right) = \frac{\partial \mathcal{L}}{\partial z} \Rightarrow \frac{d}{dt}(m\dot{z}) = -mg \\
+    & \qquad\qquad\qquad\qquad\qquad \Downarrow \\
+    & \qquad\qquad\qquad\qquad m \underbrace{\frac{d^2 z}{dt^2}}_{\searrow \ddot{z}} + mg = 0 \quad \text{(NEWTON)}
+\end{align*}
+
+\vspace{0.5cm}
+\noindent \textbf{Es.: 2) PART. in un piano con $F = F(r)$}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Coordinate polari (r, theta) per una massa m nel piano xy]
+% ==========================================
+
+\begin{align*}
+    \vec{v} &= v_r \hat{u}_r + v_\theta \hat{u}_\theta \\
+    \vec{v} &= \dot{r} \hat{u}_r + r\dot{\theta} \hat{u}_\theta \\
+    K &= \frac{1}{2}m(\dot{r}^2 + r^2\dot{\theta}^2) \qquad V = V(r)
+\end{align*}
+
+\begin{equation*}
+    \mathcal{L} = \frac{1}{2}m(\dot{r}^2 + r^2\dot{\theta}^2) - V(r) \qquad \qquad p_\theta = \frac{\partial \mathcal{L}}{\partial \dot{\theta}} = mr^2\dot{\theta} = \underbrace{m\omega r^2}_{\downarrow L} = |\vec{L}| \quad \begin{matrix} \text{mom. Ang.} \\ \text{(SI CONSERVA)} \end{matrix}
+\end{equation*}
+
+\newpage
+% ---------------------------------------------------------
+\section*{FORMALISMO HAMILTONIANO:}
+
+\begin{equation*}
+    \frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{q}_i}\right) = \frac{\partial \mathcal{L}}{\partial q_i} \qquad i = 1 \dots n \qquad n \text{ Eq. II}^\circ \text{ ordine} \qquad \begin{cases} q_i(0) \\ \dot{q}_i(0) = \frac{dq_i}{dt}(0) \end{cases}
+\end{equation*}
+
+\vspace{0.5cm}
+\begin{align*}
+    (q_i, \dot{q}_i) &\iff (q_i, p_i) \Rightarrow H(q,p) = \sum_{i=1}^n p_i \dot{q}_i - \mathcal{L}(q, \dot{q}) \\
+    \underbrace{\hphantom{(q_i, \dot{q}_i)}}_{\substack{\text{non} \\ \text{indipendenti} \\ n \text{ variabili}}} & \qquad \underbrace{\hphantom{(q_i, p_i)}}_{\substack{\text{indipendenti} \\ 2n \text{ variabili}}} \qquad\qquad \rightarrow \text{Se sistema conserv.} \Rightarrow \boxed{H(q,p) = K(q,p) + V(q)}
+\end{align*}
+
+\vspace{0.5cm}
+\begin{equation*}
+    \begin{matrix}
+        q_i(0) \Rightarrow \\
+        \\
+        p_i(0) \Rightarrow
+    \end{matrix} \quad 
+    \begin{cases} 
+        \dot{q}_i = \dfrac{\partial H}{\partial p_i} \\ \\
+        \dot{p}_i = -\dfrac{\partial H}{\partial q_i} 
+    \end{cases} \quad i = 1 \dots n \qquad 
+    \begin{matrix}
+        \text{Eq. di HAMILTON} \\
+        \\
+        \text{(ho raddopp. le var. ma} \\ 
+        \text{ora le eq. sono del I ordine)}
+    \end{matrix}
+\end{equation*}
+
+\vspace{0.8cm}
+\noindent \textbf{Es.: $H(q,p)$ per particella con $V(x,y,z)$}
+
+\vspace{0.3cm}
+\begin{equation*}
+    \mathcal{L} = \frac{1}{2}m(\dot{x}^2 + \dot{y}^2 + \dot{z}^2) - V(x,y,z) \quad \Rightarrow \quad H = \sum_{i=1}^3 p_i \dot{q}_i - \mathcal{L} = \quad \left\lceil p_i = \frac{\partial \mathcal{L}}{\partial \dot{q}_i} \Rightarrow p_x = m\dot{x} \Rightarrow \dot{x} = \frac{p_x}{m} \right\rfloor
+\end{equation*}
+
+\begin{align*}
+    &= p_x \dot{x} + p_y \dot{y} + p_z \dot{z} - \frac{1}{2}m(\dot{x}^2 + \dot{y}^2 + \dot{z}^2) + V(x,y,z) = \\
+    \\
+    &= \frac{p_x^2}{m} + \frac{p_y^2}{m} + \frac{p_z^2}{m} - \frac{1}{2}m\left( \frac{p_x^2}{m^2} + \frac{p_y^2}{m^2} + \frac{p_z^2}{m^2} \right) + V(x,y,z) = \\
+    \\
+    &= \underbrace{\frac{1}{2m} (p_x^2 + p_y^2 + p_z^2)}_{K(p)} + \underbrace{V(x,y,z)}_{V(q)}
+\end{align*}
+
+\vspace{0.8cm}
+\noindent \textbf{Es.: $\mathcal{L}$ di una part. immersa in un campo E.M.:}
+
+\begin{align*}
+    \text{div} \vec{E} &= \frac{\rho}{\epsilon_0} & \text{div} \vec{B} &= 0 & \vec{B} &= \text{rot} \vec{A} & \vec{E} &= -\nabla \varphi - \frac{\partial \vec{A}}{\partial t} \\
+    \text{rot} \vec{E} &= -\frac{\partial \vec{B}}{\partial t} & \text{rot} \vec{B} &= \mu_0 \vec{J} + \mu_0 \epsilon_0 \frac{\partial \vec{E}}{\partial t} & & \begin{matrix} \text{GAUGE:} \\ \vec{A} \rightarrow \vec{A}' = \vec{A} + \nabla f \\ \varphi \rightarrow \varphi' = \varphi - \frac{\partial f}{\partial t} \end{matrix}
+\end{align*}
+
+\begin{equation*}
+    \vec{A} = \begin{bmatrix} A_x(x,y,z,t) \\ A_y(x,y,z,t) \\ A_z(x,y,z,t) \end{bmatrix} \qquad \varphi = \varphi(x,y,z,t)
+\end{equation*}
+
+\begin{equation*}
+    \boxed{ \mathcal{L} = \underbrace{\frac{1}{2}m|\vec{v}|^2}_{E_K} - \underbrace{e\varphi}_{F_{el}} + \underbrace{e\vec{v}\cdot\vec{A}}_{\searrow \vec{J}\cdot\vec{A}} } \longrightarrow \vec{J} = ne\vec{v}
+\end{equation*}
+
+\begin{equation*}
+    \Rightarrow \mathcal{L} = \frac{1}{2}m(v_x^2 + v_y^2 + v_z^2) - e\varphi + ev_x A_x + ev_y A_y + ev_z A_z
+\end{equation*}
+
+\begin{equation*}
+    \frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{q}_i}\right) = \frac{\partial \mathcal{L}}{\partial q_i} \qquad q_i = x, \quad \dot{q}_i = \dot{x} = v_x
+\end{equation*}
+
+\begin{equation*}
+    \Rightarrow \mathcal{L}_x \Rightarrow \boxed{ \underbrace{\frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial v_x}\right)}_{1} = \underbrace{\frac{\partial \mathcal{L}}{\partial x}}_{2} }
+\end{equation*}
+
+\vspace{0.5cm}
+\noindent \textbf{Sviluppo i termini 1 e 2:} \\
+\textcircled{1} $\frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial v_x}\right) = \frac{d}{dt}(mv_x + eA_x) = ma_x + e\frac{dA_x}{dt} =$
+\begin{equation*}
+    = \left\lceil ma_x + e\left( \frac{\partial A_x}{\partial x}v_x + \frac{\partial A_x}{\partial y}v_y + \frac{\partial A_x}{\partial z}v_z + \frac{\partial A_x}{\partial t} \right) \right\rfloor
+\end{equation*}
+
+\textcircled{2} $\frac{\partial \mathcal{L}}{\partial x} = \left\lceil -e\frac{\partial \varphi}{\partial x} + e\left( \frac{\partial A_x}{\partial x}v_x + \frac{\partial A_y}{\partial x}v_y + \frac{\partial A_z}{\partial x}v_z \right) \right\rfloor$
+
+\vspace{0.3cm}
+\noindent Eguaglio \textcircled{1} e \textcircled{2}:
+\begin{align*}
+    ma_x + e\left( \cancel{\frac{\partial A_x}{\partial x}v_x} + \frac{\partial A_x}{\partial y}v_y + \frac{\partial A_x}{\partial z}v_z + \frac{\partial A_x}{\partial t} \right) &= -e\frac{\partial \varphi}{\partial x} + e\left( \cancel{\frac{\partial A_x}{\partial x}v_x} + \frac{\partial A_y}{\partial x}v_y + \frac{\partial A_z}{\partial x}v_z \right) \\
+    \Rightarrow ma_x = -e\left( \frac{\partial A_x}{\partial y}v_y + \frac{\partial A_x}{\partial z}v_z + \frac{\partial A_x}{\partial t} \right) &- e\frac{\partial \varphi}{\partial x} + e\left( \frac{\partial A_y}{\partial x}v_y + \frac{\partial A_z}{\partial x}v_z \right)
+\end{align*}
+
+\begin{align*}
+    \Rightarrow ma_x &= -e\underbrace{\left[ \frac{\partial \varphi}{\partial x} + \frac{\partial A_x}{\partial t} \right]}_{-E_x} + e\left[ v_y \underbrace{\left( \frac{\partial A_y}{\partial x} - \frac{\partial A_x}{\partial y} \right)}_{(\text{rot}\vec{A})_z = B_z} + v_z \underbrace{\left( \frac{\partial A_z}{\partial x} - \frac{\partial A_x}{\partial z} \right)}_{-(\text{rot}\vec{A})_y = -B_y} \right] \\
+    &= -eE_x + e(v_y B_z - v_z B_y) = -eE_x + e(\vec{v} \wedge \vec{B})_x
+\end{align*}
+
+\begin{equation*}
+    \Rightarrow ma_x = -eE_x + e(\vec{v} \times \vec{B})_x \Rightarrow \text{3D} \Rightarrow \lceil m\vec{a} = -e\vec{E} + e(\vec{v} \wedge \vec{B}) \rfloor \quad \begin{matrix} \text{(NEWTON con FORZA di} \\ \text{LORENTZ)} \end{matrix}
+\end{equation*}
+
+\vspace{0.8cm}
+\begin{equation*}
+    p_x = \frac{\partial \mathcal{L}}{\partial \dot{x}} = m\dot{x} + eA_x \quad , \quad \lceil \vec{p} = m\vec{v} + e\vec{A} \rfloor \qquad m\vec{v} = \vec{p} - e\vec{A}
+\end{equation*}
+
+\begin{equation*}
+    H = \sum_{i=x,y,z} p_i \dot{q}_i - \mathcal{L} \quad , \quad H = \underset{\downarrow}{K} + \underset{\downarrow}{V} \quad \Rightarrow \quad \boxed{ H = \underbrace{\frac{(\vec{p} - e\vec{A})^2}{2m}}_{\text{solo } \vec{v}} + \underbrace{e\varphi}_{\nearrow \text{en. pot. elettrost}} }
+\end{equation*}
+
+\newpage
+% ---------------------------------------------------------
+\section*{SPAZIO DELLE FASI:}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Grafico 1D dello spazio delle fasi. Asse orizzontale x, asse verticale p_x con una traiettoria curva da un punto iniziale al tempo t_0]
+% ==========================================
+\noindent $x = x(t)$ \\
+$p_x = p_x(t)$ \hfill SPAZIO delle FASI $\Gamma$
+
+\vspace{0.5cm}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Grafico 3D (x,y,z) e spazio 6D. Sistema di assi per le q e un sistema di assi per le p, con un cubetto di volume elementare]
+% ==========================================
+
+\begin{align*}
+    & (x, y, z) \\
+    & (p_x, p_y, p_z)
+\end{align*}
+N part. (3D) $\Rightarrow$ 6N ipespazio 6D \\
+$d\Gamma = dq \, dp$ (con $[p]$ 3 assi e $[q]$ 3 assi)
+
+\vspace{0.5cm}
+\begin{equation*}
+    p_i = \frac{\partial \mathcal{L}}{\partial \dot{q}_i} \Rightarrow p_i \times q_i = [\mathcal{L}] \text{ (dim. di una lagrang., energia)}
+\end{equation*}
+\begin{equation*}
+    \hphantom{p_i = \frac{\partial \mathcal{L}}{\partial \dot{q}_i}} = E \cdot t \rightarrow \text{MOMENTO ANGOLARE} \rightarrow \text{AZIONE}
+\end{equation*}
+
+\newpage
+% ---------------------------------------------------------
+\section*{FONDAMENTI di MECCANICA STATISTICA: ENSEMBLE}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Disegno di un cilindro (barattolo) contenente un gas perfetto monoatomico]
+% ==========================================
+
+\begin{align*}
+    & \text{GAS PERF. MONOAT.} \\
+    & 1 \text{ mole} \quad N_A \simeq 10^{24} \qquad P, V, T \text{ (GAS)} \\
+    & \left. \begin{matrix} (x, y, z) \\ (p_x, p_y, p_z) \end{matrix} \right\} \simeq 10^{24} \text{ Eq. di HAMILTON}
+\end{align*}
+
+\begin{equation*}
+    \dot{q}_i = \frac{\partial H}{\partial p_i} \quad , \quad \dot{p}_i = -\frac{\partial H}{\partial q_i} \qquad (q_i(0), p_i(0))
+\end{equation*}
+
+\vspace{0.5cm}
+\begin{align*}
+    G &= G(x_1 \dots x_N, p_1 \dots p_N) = G(q, p) \\
+    \bar{G} &= \frac{1}{T} \int_0^T G(q(t), p(t)) dt \qquad \text{MEDIA TEMPORALE della grandezza } G \\
+    & \qquad\qquad \downarrow \\
+    & \qquad\qquad (q_i(0), p_i(0)) \qquad \text{NON FATTIBILE}
+\end{align*}
+
+\vspace{0.5cm}
+\noindent Supp. di costruire $M$ repliche del barattolo con COND. INIZ. DIVERSE (ma stessi $P, V, T$).
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Disegno di M=3 barattoli di gas a sinistra e le relative traiettorie nello spazio delle fasi [p]-[q] da t=t1 a t=t2. M->+inf]
+% ==========================================
+
+\vspace{0.3cm}
+\noindent $M \text{ repliche} \Rightarrow \text{ENSEMBLE}$ \\
+$M \rightarrow +\infty$
+
+\vspace{0.5cm}
+\begin{equation*}
+    \boxed{ \langle G \rangle = \frac{1}{M} \sum_i G_i } \quad \text{media pesata sull'ensemble}
+\end{equation*}
+
+\vspace{0.5cm}
+% ==========================================
+% [SPAZIO PER IMMAGINE: "Tubo" di flusso (volume) nello spazio delle fasi Gamma con elementino dGamma]
+% ==========================================
+
+\noindent $d\Gamma = dp \, dq$
+
+\begin{equation*}
+    \rho(q_i, p_i) = \frac{\# \text{sistemi che hanno } (q_i, p_i)}{\text{Vol. in } \Gamma} \qquad \begin{matrix} \text{per tale valore} \\ \nwarrow \\ (q_i, p_i) \end{matrix}
+\end{equation*}
+
+\begin{equation*}
+    dM(q_i, p_i) = \rho(q_i, p_i) d\Gamma
+\end{equation*}
+
+\vspace{0.3cm}
+\begin{align*}
+    \langle G \rangle &= \frac{ \int G(q_i, p_i) \overbrace{\rho(q_i, p_i)}^{\# \text{ sist. con } (q_i, p_i)/\text{vol}} dq \, dp }{ \int \rho(q_i, p_i) dq \, dp } \Rightarrow \langle G \rangle = \frac{1}{M} \sum_i G_i \\
+    \\
+    \rho(q_i, p_i) &= \frac{\# \text{sist. che hanno } (q_i, p_i)}{\text{vol } \Gamma} \Rightarrow \int \rho(q, p) d\Gamma = 1 \Rightarrow \text{DENSITÀ di PROBABILITÀ} \\
+    & \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\quad \nwarrow \text{densità di prob. classica}
+\end{align*}
+
+\vspace{0.3cm}
+\begin{equation*}
+    \langle G \rangle = \int G(q, p) \rho(q, p) d\Gamma
+\end{equation*}
+
+\vspace{0.5cm}
+\begin{equation*}
+    \text{IPOTESI ERGODICA} \Rightarrow \boxed{ \bar{G} = \langle G \rangle }
+\end{equation*}
+
+\vspace{0.8cm}
+\noindent Il punto fond. della mecc. stat. è trovare $\rho(q, p) = ?$
+
+\vspace{0.8cm}
+\noindent \underline{\textbf{TEOREMA di LIOUVILLE:}}
+
+\begin{equation*}
+    \boxed{ \frac{d}{dt}[\rho(q, p)] = 0 } \qquad \text{STAZIONARIA}
+\end{equation*}
+
+\begin{equation*}
+    \rho(q, p) \Rightarrow \rho(E) = \rho[E(q, p)]
+\end{equation*}
+
+\vspace{0.5cm}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Cilindro con vettori velocità v1 e v2 per le particelle]
+% ==========================================
+
+\begin{align*}
+    & \textcircled{1} \qquad \bar{v} = \frac{1}{T} \int_0^T v(\overbrace{q_1, q_2}^{x_1, y_1, z_1}, \overbrace{p_1, p_2}^{p_{2x}, p_{2y}, p_{2z}}) dt \\
+    \\
+    & \textcircled{2} \qquad M \text{ REPLICHE} \qquad \langle v \rangle = \frac{ \int v(q, p) \rho(q, p) dq dp }{ \int \rho(dq, dp) } \\
+    \\
+    & \lceil \bar{v} = \langle v \rangle \rfloor
+\end{align*}
+
+\newpage
+% ---------------------------------------------------------
+\begin{itemize}
+    \item \underline{\textbf{ENSEMBLE MICROCANONICO:}}
+\end{itemize}
+
+SISTEMI ISOLATI $\rightarrow$ E si conserva \\
+$E = E_0 + \delta E$
+\begin{equation*}
+    \rho(E) = \begin{cases} 
+        \text{COST} & \text{PER } E \simeq E_0 \\
+        0 & \text{altrove}
+    \end{cases}
+\end{equation*}
+
+\vspace{0.5cm}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Asse orizzontale con punti 0, 1, 2, L. Punti etichettati (q2,p2) e (q1,p1)]
+% ==========================================
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Piano q1-q2 con una regione quadrata evidenziata. Punto (q1 barra, q2 barra) all'interno]
+% ==========================================
+\noindent \textbf{COORDINATE ACCESSIBILI:} \\
+tutte le possibili combinazioni che il sistema può avere (ensemble)
+
+\vspace{0.5cm}
+\begin{equation*}
+    \frac{p_1^2}{2m} + \frac{p_2^2}{2m} = E_0 \qquad p_1^2 + p_2^2 = 2mE_0
+\end{equation*}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Piano p1-p2 con una circonferenza di raggio r = sqrt(2mE0) e uno spessore delta E]
+% ==========================================
+
+$\Gamma(q_1, q_2, p_1, p_2)$ (combino il quadrato e la circonf. e ottengo il vol. in 4D che replica tutti i sist. possibili)
+
+\vspace{0.3cm}
+Tutti i sistemi hanno la stessa En. quindi la prob. di avere una replica con vol. $(\bar{q}_1, \bar{q}_2, \bar{p}_1, \bar{p}_2)$ è la stessa per tutti i sist., quindi $\rho(E) = \text{cost}$
+
+\vspace{0.8cm}
+% ---------------------------------------------------------
+\begin{itemize}
+    \item \underline{\textbf{ENSEMBLE CANONICO:}}
+\end{itemize}
+
+SISTEMI in eq. TERMICO
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Rettangolo grande "sist. tot (t)" contenente un rettangolo più piccolo "sottosistema (s)". Frecce indicano scambio di Energia E. A lato un cerchio "termostato (r)"]
+% ==========================================
+
+$\rightarrow$ sottosistema (s) $\Rightarrow$ NON ISOLATO $\Rightarrow$ SCAMBIA E COL TERMOSTATO \\
+$\nearrow$ Equilib. termico (sono in contatto) (r mantiene la temp. di s)
+
+\vspace{0.3cm}
+le M repliche di s hanno una E diversa tra loro
+
+\vspace{0.5cm}
+Si DEFINISCE $\langle E \rangle$ e $\Delta E$ (incertezza) \\
+Si dimostra che $\Rightarrow \frac{\Delta E}{\langle E \rangle} \propto \frac{1}{\sqrt{N}} \xrightarrow[N \to +\infty]{} 0$
+
+\vspace{0.8cm}
+% ---------------------------------------------------------
+\begin{itemize}
+    \item \underline{\textbf{ENSEMBLE GRANCANONICO:}}
+\end{itemize}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Rettangolo "sist. tot (t)" con "termostato r". Dentro c'è "sottosist s" che scambia Energia E e particelle N con l'esterno]
+% ==========================================
+
+Ogni replica del sottosis. ha un diverso E e un diverso N \\
+$\langle E \rangle$ e $\Delta E \qquad + \qquad \langle N \rangle$ e $\Delta N$
+
+\vspace{0.8cm}
+\noindent Riprendo ENS. CANONICO: Eq. term.
+\begin{equation*}
+    p(E) = c e^{-\beta E} = c e^{-\frac{E}{K_B T}} \qquad c = \text{cost} \quad , \quad \beta = \frac{1}{K_B T} \qquad K_B = 1,38 \cdot 10^{-23} \, J/K
+\end{equation*}
+\begin{equation*}
+    \searrow \quad \text{DISTRIBUZ. di BOLTZMANN}
+\end{equation*}
+
+\vspace{0.3cm}
+\noindent \textcircled{1} $T = 300K$
+\begin{align*}
+    \Rightarrow K_B T &= 4,1 \cdot 10^{-21} \, J & \text{INTRODUCO: } 1 \, eV = 1,6 \cdot 10^{-19} \, J \quad & \text{(En. cinetica di un} \\
+    &= 2,5 \cdot 10^{-2} \, eV & & \text{elett. sotto diff. pot.} \\
+    &= 25 \, meV & & \text{di un volt)}
+\end{align*}
+
+\vspace{0.5cm}
+\begin{align*}
+    & p = c e^{-\beta E} \Rightarrow \int p(q, p) \, dq \, dp = 1 = c \int e^{-\beta E} dq \, dp \Rightarrow c = \frac{1}{\int e^{-\beta E} dq \, dp} \\
+    & \qquad \downarrow \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad \text{(se } c \text{ ha questo val. } p \text{ è} \\
+    & \qquad Z = \int e^{-\beta E} dq \, dp \quad \text{FUNZIONE PARTIZIONE} \qquad\quad \text{una dens. di prob.)}
+\end{align*}
+
+\begin{equation*}
+    p(E) = \frac{e^{-\beta E}}{Z} \rightarrow \text{NORMALIZZATA} \Rightarrow \text{dens. di prob.}
+\end{equation*}
+
+\begin{equation*}
+    \boxed{ \langle G \rangle = \frac{\int G(q, p) e^{-\beta E} dq \, dp}{Z} }
+\end{equation*}
+
+\newpage
+% ---------------------------------------------------------
+% ==========================================
+% [SPAZIO PER IMMAGINE: Scatola Gamma contenente due sottosistemi S1 e S2, con scambi di energia E1 ed E2]
+% ==========================================
+
+\noindent Se $S_1$ e $S_2$ distinti e indipend.
+\begin{equation*}
+    E_{1+2} = E_1 + E_2
+\end{equation*}
+
+\begin{align*}
+    Z_{1+2} &= \int e^{-\beta E_{1+2}} dq_1 \, dp_1 \, dq_2 \, dp_2 = \\
+    &= \int e^{-\beta (E_1 + E_2)} dq_1 \, dp_1 \, dq_2 \, dp_2 = Z_1 \cdot Z_2
+\end{align*}
+
+\begin{equation*}
+    N \text{ sottosis.} \Rightarrow Z_N = \prod_{j=1}^N Z_j
+\end{equation*}
+
+\vspace{0.5cm}
+\begin{equation*}
+    \langle E \rangle = U = \frac{\int E(q, p) e^{-\beta E} dq \, dp}{Z} \qquad 
+    \begin{array}{|l}
+        \frac{\partial}{\partial \beta} \ln(Z) = \frac{1}{Z} \frac{\partial Z}{\partial \beta} = \frac{1}{Z} \frac{\partial}{\partial \beta} \int e^{-\beta E} dq \, dp = \\
+        \\
+        = \frac{1}{Z} \int \frac{\partial}{\partial \beta} (e^{-\beta E}) dq \, dp = \underbrace{ - \frac{1}{Z} \int E e^{-\beta E} dq \, dp }_{\downarrow}
+    \end{array}
+\end{equation*}
+
+\begin{equation*}
+    \Rightarrow \quad \langle E \rangle = U = - \frac{\partial}{\partial \beta} \ln Z
+\end{equation*}
+
+\vspace{0.8cm}
+% ---------------------------------------------------------
+\noindent \underline{\textbf{TEOREMA di EQUIPARTIZIONE dell'ENERGIA:}} (per sist. a eq. termico)
+
+\vspace{0.3cm}
+\noindent Es.: \qquad $\nwarrow$ una delle variabili $q_i$ del gas \hfill $\nearrow$ trascuro
+\begin{equation*}
+    E = a x^2 + f(q, p)_{q \neq x} \qquad \Rightarrow \qquad \langle E \rangle = \langle a x^2 \rangle + \langle f(q, p) \rangle
+\end{equation*}
+
+\begin{align*}
+    \langle a x^2 \rangle &= \frac{\int a x^2 e^{-\beta E} dq \, dp}{Z} = \frac{\int a x^2 e^{-\beta(a x^2 + f)} dq \, dp}{\int e^{-\beta(a x^2 + f)} dq \, dp} = \frac{\int a x^2 e^{-\beta a x^2} dx \cancel{ \int e^{-\beta f} (dq \, dp)_{q \neq x} }}{\int e^{-\beta a x^2} dx \cancel{ \int e^{-\beta f} (dq \, dp)_{q \neq x} }} \\
+    \\
+    & \text{INTEGR. di una Gaussiana} \\
+    & \qquad\qquad \downarrow \\
+    &= \frac{\int a x^2 e^{-\beta a x^2} dx}{\int e^{-\beta a x^2} dx} = - \frac{\partial}{\partial \beta} \ln \left[ \int e^{-\beta a x^2} dx \right] = - \frac{\partial}{\partial \beta} \ln \left[ \sqrt{\frac{\pi}{\beta a}} \right] = - \frac{1}{2} \frac{\partial}{\partial \beta} [\ln \pi - \ln \beta - \ln a] = \\
+    &= \frac{1}{2\beta} = \frac{1}{2} K_B T \qquad \Rightarrow \qquad \boxed{ \langle a x^2 \rangle \rightarrow \frac{1}{2} K_B T }
+\end{align*}
+
+\vspace{0.5cm}
+\begin{equation*}
+    E = \underbrace{ax^2}_{\sim} + \underbrace{bp^2}_{\sim} + cx_1 + dp_1 \quad \Rightarrow \quad \langle E \rangle = \underbrace{ \frac{1}{2} K_B T }_{\sim} + \underbrace{ \frac{1}{2} K_B T }_{\sim} + \langle cx_1 + dp_1 \rangle
+\end{equation*}
+
+\newpage
+% ---------------------------------------------------------
+\section*{APPLICAZIONE: GAS PERFETTO MONOATOMICO:}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Disegno di due sistemi. A sinistra: scatola con N_AVOG. particelle a contatto con un termostato T. A destra: scatola con 1 MOL a contatto con termostato T.]
+% ==========================================
+
+\begin{align*}
+    E &= \frac{1}{2m} (p_x^2 + p_y^2 + p_z^2) \\
+    Z_{mol} &= \int e^{-\beta E} dq \, dp = \\
+    &= \int e^{-\beta \left[ \frac{1}{2m} (p_x^2 + p_y^2 + p_z^2) \right]} dx \, dy \, dz \, dp_x \, dp_y \, dp_z \\
+    &= V \cdot \left( \int e^{-\beta \frac{p^2}{2m}} dp \right)^3 = V \cdot (2\pi m K_B T)^{3/2}
+\end{align*}
+
+\vspace{0.3cm}
+\noindent Tutte le altre molecole sono $N_A$ SOTTOSISTEMI NON INTERAGENTI
+\begin{equation*}
+    \Rightarrow \quad Z_{gas} = \prod_{i=1}^{N_A} Z_{moli} = \boxed{ V^{N_A} (2\pi m K_B T)^{\frac{3N_A}{2}} }
+\end{equation*}
+
+\begin{align*}
+    \langle E \rangle &= - \frac{\partial}{\partial \beta} \ln(Z_{gas}) = U_{gas} = - \frac{\partial}{\partial \beta} \ln \left[ V^{N_A} \left( \frac{2\pi m}{\beta} \right)^{\frac{3N_A}{2}} \right] = - \frac{\partial}{\partial \beta} \ln \left[ \frac{V^{2/3} 2\pi m}{\beta} \right]^{\frac{3N_A}{2}} = \\
+    \\
+    &= - \frac{3N_A}{2} \frac{\partial}{\partial \beta} \ln \left[ \frac{V^{2/3} 2\pi m}{\beta} \right] = - \frac{3N_A}{2} \left( \frac{1}{\frac{V^{2/3} 2\pi m}{\beta}} \right) \left( - \frac{V^{2/3} 2\pi m}{\beta^2} \right) = \\
+    \\
+    &= \frac{3N_A}{2} \frac{1}{\beta} = \frac{3}{2} N_A \underbrace{K_B}_{\searrow R} T = \frac{3}{2} R T
+\end{align*}
+
+\vspace{0.5cm}
+\begin{itemize}
+    \item $E_{1 mol} = \frac{p_x^2}{2m} + \frac{p_y^2}{2m} + \frac{p_z^2}{2m} \quad \Rightarrow \quad \langle E_{1 mol} \rangle = \frac{1}{2}K_BT + \frac{1}{2}K_BT + \frac{1}{2}K_BT = \frac{3}{2} K_B T$
+\end{itemize}
+
+\begin{equation*}
+    \Rightarrow \langle E_{gas} \rangle = \langle E_{1 mol} \rangle N_A = \frac{3}{2} N_A K_B T = \frac{3}{2} R T \qquad\qquad C_V = \left( \frac{\partial U}{\partial T} \right) = \frac{3}{2} R
+\end{equation*}
+
+\newpage
+% ---------------------------------------------------------
+\section*{ATOMI e PARTICELLE: metodi sperim. e classici}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Due contenitori quadrati per H2 e O2 con l'indicazione "stessa P, V, T"]
+% ==========================================
+
+\begin{equation*}
+    \frac{m_{H_2}}{m_{O_2}} = \frac{1}{16}
+\end{equation*}
+
+\vspace{0.3cm}
+\noindent $\Rightarrow$ Peso Atomico (Peso molecolare) \qquad $H \rightarrow 1, \quad H_2 \rightarrow 2, \quad O \rightarrow 16, \quad O_2 \rightarrow 32$
+
+\vspace{0.5cm}
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|l|c|c|c|c|}
+        \hline
+        1 mol Sostanza & $H_2$ & $O_2$ & $Ar$ & $H_2O$ \\
+        \hline
+        Peso Atom. & \begin{tabular}{@{}c@{}} $H \rightarrow 1$ \\ $H_2 \rightarrow 2$ \end{tabular} & \begin{tabular}{@{}c@{}} $O \rightarrow 16$ \\ $O_2 \rightarrow 32$ \end{tabular} & $Ar \rightarrow 40$ & \begin{tabular}{@{}c@{}} $H \rightarrow 1 \quad O \rightarrow 16$ \\ $H_2O \rightarrow 18$ \end{tabular} \\
+        \hline
+        MASSA ATOMICA [g] & 2g & 32g & 40g & 18g \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{align*}
+    1 \text{ u.m.a.} &= m_H \simeq m_{protone} = m_{neutrone} \\
+    &= \frac{1}{2} \frac{(1 \text{ mol } H_2)}{N_A} = 1,67 \cdot 10^{-24} \text{ g}
+\end{align*}
+
+\vspace{0.8cm}
+\begin{itemize}
+    \item \textbf{Misura della massa: Spettrometro di massa}
+\end{itemize}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Schema dello spettrometro di massa. Generatore di elettroni (effetto termoionico), accelerazione tramite Delta V, e deflessione semicircolare in un campo magnetico B uniforme.]
+% ==========================================
+
+\noindent $\uparrow$ effetto termoionico \qquad $\searrow$ le molecole si ionizzano
+
+\begin{align*}
+    \frac{1}{2}mv^2 &= q \Delta V \quad \Rightarrow \quad v = \sqrt{\frac{2q\Delta V}{m}} \\
+    qvB &= m\frac{v^2}{r} \quad \Rightarrow \quad r = \frac{mv}{qB}
+\end{align*}
+
+\begin{equation*}
+    \Rightarrow r^2 = \frac{2m\Delta V}{qB^2} \qquad \Rightarrow \qquad \frac{q}{m} = \frac{2 \overbrace{\Delta V}^{\text{NOTO}}}{ \underbrace{r^2}_{\downarrow \text{misura}} \underbrace{B^2}_{\searrow \text{NOTO}} }
+\end{equation*}
+
+\newpage
+% ---------------------------------------------------------
+\section*{STIMARE RAGGIO ATOMICO:}
+
+\begin{enumerate}
+    \item \textbf{Libero cammino medio:} $\ell_m =$ distanza percorsa da un atomo tra 2 urti
+\end{enumerate}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Atomo in movimento con vettore v e cilindro di collisione tracciato di raggio 2r per indicare la sezione d'urto]
+% ==========================================
+
+\begin{align*}
+    & n \rightarrow \text{densità} \\
+    & \left. \begin{matrix} h_{cil} = v \Delta t \\ S_{cil} = \pi(2r)^2 \end{matrix} \right\} V_{cil} = 4\pi r^2 v \Delta t
+\end{align*}
+
+\begin{equation*}
+    N \text{ atomi nel cilindro} = n \cdot V_{cil} = n 4\pi r^2 v \Delta t \qquad \ell_m = \frac{\text{distanza percorsa in } \Delta t}{\# \text{ urti in } \Delta t}
+\end{equation*}
+
+\begin{equation*}
+    = \frac{v \Delta t}{n 4\pi r^2 v \Delta t} = \frac{1}{4\pi n r^2} \qquad \text{(se tutti gli atomi si muovono molt. per } \sqrt{2} \text{)}
+\end{equation*}
+
+\noindent VISCOSIMETRI misurano $\ell_m \quad \text{(Es. in aria } \ell_m = 10^{-7} \text{ m)}$
+
+\vspace{0.8cm}
+\begin{enumerate}
+    \setcounter{enumi}{1}
+    \item \textbf{Eq. di stato dei GAS REALI:} 1 mol
+\end{enumerate}
+
+\begin{equation*}
+    \left( p + \frac{a}{V^2} \right)(V - b) = RT \qquad b = \text{covolume} = 4 \cdot \overbrace{\frac{4}{3}\pi r^3}^{\text{Vol. atomo}} \cdot N_A
+\end{equation*}
+
+\noindent Fisso $V \quad \Rightarrow \quad$ Tabella $T \mid P \quad \Rightarrow \quad$ Trovo $P$ in funz. di $T \quad \Rightarrow \quad$ Fitto i dati trovando $a$ e $b \quad \searrow \quad$ ricavo $r$
+
+\vspace{0.8cm}
+\begin{enumerate}
+    \setcounter{enumi}{2}
+    \item \textbf{DIFFRAZ. di BRAGG:}
+\end{enumerate}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Reticolo cristallino (palline) e onde incidenti/riflesse per mostrare la diffrazione di Bragg, con passo reticolare 'a']
+% ==========================================
+
+\noindent $a$ Passo reticolare \quad (in realtà $a = 2r$)
+
+\vspace{0.8cm}
+% ---------------------------------------------------------
+\noindent \textbf{Esempi di Raggi Atomici:}
+
+\vspace{0.3cm}
+\noindent \textbf{Ne} (Neon)
+\begin{equation*}
+    r_{Ne} \rightarrow \begin{cases}
+        1,18 \cdot 10^{-10} \text{ m} & (\ell_m) \\
+        2,1 \text{ "} & (\text{Eq. gas reali}) \\
+        1,6 \text{ "} & (\text{Bragg})
+    \end{cases}
+\end{equation*}
+
+\vspace{0.3cm}
+\noindent \textbf{H} (Idrogeno) $\qquad Z=1 \qquad r_H = 0,53 \text{ \AA } (10^{-10} \text{ m})$
+
+\vspace{0.3cm}
+\noindent \textbf{U} (Uranio) $\qquad\quad Z=92 \qquad r_U = 1,4 \text{ \AA}$
+
+\newpage
+% ---------------------------------------------------------
+\section*{PARTICELLE ELEMENTARI}
+
+\begin{itemize}
+    \item \underline{\textbf{ELETTRONI:}} \qquad $m_e = \frac{1}{1840} m_p = 9,1 \cdot 10^{-31} \text{ kg}$
+\end{itemize}
+
+\begin{equation*}
+    q_e = -1,6 \cdot 10^{-19} \text{ C} \qquad \text{Si generano per eff. TERMOIONICO}
+\end{equation*}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Schema di un circuito con condensatore (campo E) e resistenza per emissione termoionica di elettroni]
+% ==========================================
+
+\vspace{0.8cm}
+\begin{itemize}
+    \item \underline{\textbf{PARTICELLE $\alpha$:}} \qquad $m_\alpha = 4 \text{ u.m.a.} \rightarrow \text{NUCLEI di He } \left( ^4_2\text{He}^{++} \right)$
+\end{itemize}
+
+\begin{equation*}
+    \text{Si generano da decadimenti radioattivi } \Rightarrow E_K = 1 \text{--} 10 \text{ MeV}
+\end{equation*}
+\begin{equation*}
+    \ell_m \simeq 10 \text{ cm} \quad , \quad v \simeq 10^7 \text{ m/s}
+\end{equation*}
+
+\vspace{0.8cm}
+\begin{itemize}
+    \item \underline{\textbf{RAGGI X:}} \qquad LUCE \quad $\lambda \simeq 1 \text{ \AA}$
+\end{itemize}
+
+\vspace{0.3cm}
+$\rightarrow$ ASSORBIMENTO: \hfill EFFETTO FOTOELETTRICO
+% ==========================================
+% [SPAZIO PER IMMAGINE: Raggio X incidente su un materiale, un elettrone e- viene espulso]
+% ==========================================
+
+\vspace{0.3cm}
+$\rightarrow$ DIFFUSIONE ELASTICA: (scattering Rayleigh)
+% ==========================================
+% [SPAZIO PER IMMAGINE: Onda elettromagnetica lambda incidente su un centro e diffusa con la stessa lambda]
+% ==========================================
+
+\vspace{0.3cm}
+$\rightarrow$ DIFFUSIONE ANELASTICA: (scattering Compton)
+% ==========================================
+% [SPAZIO PER IMMAGINE: Onda lambda incidente su un atomo, viene diffusa un'onda lambda' diversa]
+% ==========================================
+
+\vspace{0.3cm}
+$\rightarrow$ CREAZIONE di COPPIE: 
+% ==========================================
+% [SPAZIO PER IMMAGINE: Raggio gamma/X si trasforma in una coppia elettrone e- e positrone e+]
+% ==========================================
+\begin{equation*}
+    \text{solo se } \Rightarrow E \ge 2m_e c^2
+\end{equation*}
+
+\newpage
+% ---------------------------------------------------------
+\section*{SEZIONE d'URTO:}
+
+Utilizzo SONDE (es. fascio di elett. / raggi X)
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Fascio primario N0 incide su un sottile foglio di area A contenente centri diffusori. Emerge un fascio residuo N < N0]
+% ==========================================
+
+\noindent sottile foglio di un materiale (bersaglio) \\
+$n_0 \rightarrow$ numero atomi = $n_0$ centri diffusori
+\begin{equation*}
+    N < N_0 \qquad R = N_0 - N
+\end{equation*}
+
+\vspace{0.5cm}
+% ==========================================
+% [SPAZIO PER IMMAGINE: Ingrandimento di un centro diffusore con l'area della sezione d'urto sigma evidenziata]
+% ==========================================
+\noindent $\sigma \rightarrow \text{sezione d'urto } [m^2]$
+
+\vspace{0.3cm}
+\noindent Prob. di un evento di rimozione dal fascio:
+\begin{equation*}
+    P = \frac{n_0 \cdot \sigma}{A} \qquad \text{se } n_0 \sigma = A \rightarrow \text{non passa nulla}
+\end{equation*}
+
+\begin{equation*}
+    P = \underbrace{n}_{\downarrow \frac{n_0}{A}} \sigma \quad , \quad R = P \cdot N_0 = n \sigma N_0
+\end{equation*}
+
+\vspace{0.5cm}
+\begin{equation*}
+    \sigma_{TOT} = \sigma_{FOTOEL} + \sigma_{COMP.} + \sigma_{RAY.} \qquad \sigma_{TOT} = \sum_i \sigma_i
+\end{equation*}
+
+\vspace{0.5cm}
+% ==========================================
+% [SPAZIO PER IMMAGINE: Volume differenziale del bersaglio di spessore dx. Fascio N0 incide sulla faccia di area S]
+% ==========================================
+
+\begin{align*}
+    \rho &= \frac{Kg}{m^3} \qquad & P \text{ ev. di rim.} \\
+    \downarrow & \text{ } & -dN &= [N(x+dx) - N(x)] = \overbrace{\sigma n}^{\sim} N(x) \\
+    \rho &= \frac{\# \text{Atomi}}{\text{Vol}} & \Rightarrow n &= \rho dx \\
+    \downarrow & \text{ } & \Rightarrow -&\sigma \rho N(x) dx = dN \\
+    \rho &= \frac{\# \text{Cent. diff}}{\text{Vol}} & &
+\end{align*}
+
+\begin{equation*}
+    \boxed{ N(x) = N_0 e^{-\sigma \rho x} }
+\end{equation*}
+
+\newpage
+% ---------------------------------------------------------
+\begin{equation*}
+    N(x) = N_0 e^{-x/\Lambda} \qquad \left\lceil \Lambda = \frac{1}{\sigma \rho} \right\rfloor \text{ Libero cammino medio}
+\end{equation*}
+
+\begin{equation*}
+    \ell_m = \frac{1}{4\pi r^2 n} = \frac{1}{\sigma \rho} \quad \Rightarrow \quad \sigma = 4\pi r^2
+\end{equation*}
+
+% ==========================================
+% [SPAZIO PER IMMAGINE: Due sfere di raggio r in collisione, che tracciano una sezione trasversale di raggio 2r]
+% ==========================================
+
+\vspace{0.8cm}
+% ==========================================
+% [SPAZIO PER IMMAGINE: Traiettoria di una particella sonda deviata di un angolo theta da un centro diffusore. Evidenziato il parametro d'impatto b]
+% ==========================================
+
+\noindent Centro diff. (immobile) \\
+$b = \text{parametro d'impatto}$ \\
+$\theta = \text{angolo di diffusione}$ \\
+$\theta = \theta(b)$
+
+\vspace{0.5cm}
+% ==========================================
+% [SPAZIO PER IMMAGINE: Dettaglio geometrico dello scattering su una sfera di raggio R. Evidenziati gli angoli alfa e theta, e la relazione b = R sin(alfa)]
+% ==========================================
+
+\begin{align*}
+    \theta &= \theta(b) \qquad b = R \sin \alpha \qquad 2\alpha + \theta = \pi \\
+    \\
+    \Rightarrow \alpha &= \frac{\pi}{2} - \frac{\theta}{2} \quad \Rightarrow \quad b = R \sin\left(\frac{\pi}{2} - \frac{\theta}{2}\right) = R \cos\left(\frac{\theta}{2}\right)
+\end{align*}
+
+\begin{equation*}
+    \theta = \begin{cases}
+        2 \arccos\left(\frac{b}{R}\right) & b \le R \\
+        0 & \text{altrimenti}
+    \end{cases}
+\end{equation*}
+
+
+
+
+
+\end{document}
